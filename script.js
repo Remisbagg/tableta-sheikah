@@ -109,7 +109,7 @@ function setupChestVideos() {
                             window.location.href = 'https://www.twitch.tv/remisbagg';
                         });
                     }
-                }, 3500);
+                }, 4500);
             }
         });
 
