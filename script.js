@@ -91,7 +91,7 @@ function setupChestVideos() {
                 setTimeout(() => {
                     chestSound.currentTime = 0;
                     chestSound.play().catch(error => console.log('Error playing sound:', error));
-                }, 2000);
+                }, 3000);
 
                 setTimeout(() => {
                     const popupId = chestWrapper.classList.contains('left') ? 'popup-left' :
@@ -109,7 +109,7 @@ function setupChestVideos() {
                             window.location.href = 'https://www.twitch.tv/remisbagg';
                         });
                     }
-                }, 4500);
+                }, 2000);
             }
         });
 
@@ -162,3 +162,70 @@ document.getElementById("start-button").addEventListener("click", function () {
         console.log("Error reproduciendo el sonido:", error);
     });
 });
+
+// Detectar si es un dispositivo táctil
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+// Variables para almacenar la posición inicial del toque
+let touchStartX = 0;
+let touchStartY = 0;
+let backgroundX = 0;
+let backgroundY = 0;
+
+// Función para manejar el inicio del toque
+function handleTouchStart(e) {
+    const touch = e.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+}
+
+// Función para manejar el movimiento del toque
+function handleTouchMove(e) {
+    if (!isTouchDevice) return; // Solo aplica en dispositivos táctiles
+
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+
+    // Mover el fondo basado en el desplazamiento táctil
+    const moveX = backgroundX - deltaX * 0.5; // Ajusta la sensibilidad del movimiento
+    const moveY = backgroundY - deltaY * 0.5;
+
+    // Limitar el movimiento para que el fondo no se salga de la pantalla
+    const maxX = totalWidth / 2;
+    const maxY = totalHeight / 2;
+    backgroundX = Math.max(-maxX, Math.min(moveX, maxX));
+    backgroundY = Math.max(-maxY, Math.min(moveY, maxY));
+
+    // Aplicar la transformación al fondo
+    background.style.transform = `translate(${backgroundX}px, ${backgroundY}px)`;
+
+    // Actualizar la posición inicial para el próximo movimiento
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+}
+
+// Función para manejar el fin del toque
+function handleTouchEnd() {
+    // No es necesario hacer nada aquí, pero puedes agregar lógica si lo necesitas
+}
+
+// Agregar eventos táctiles si es un dispositivo móvil
+if (isTouchDevice) {
+    document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('touchend', handleTouchEnd);
+} else {
+    // Mantener la funcionalidad del mouse para desktop
+    document.addEventListener('mousemove', (e) => {
+        moveCursor(e);
+
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
+
+        const moveX = -(mouseX * totalWidth);
+        const moveY = -(mouseY * totalHeight);
+
+        background.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+}
