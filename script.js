@@ -91,7 +91,7 @@ function setupChestVideos() {
                 setTimeout(() => {
                     chestSound.currentTime = 0;
                     chestSound.play().catch(error => console.log('Error playing sound:', error));
-                }, 3000);
+                }, 2000);
 
                 setTimeout(() => {
                     const popupId = chestWrapper.classList.contains('left') ? 'popup-left' :
