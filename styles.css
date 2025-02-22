@@ -95,9 +95,11 @@ body, html {
     height: 100%;
     pointer-events: none;
     background: url('assets/Imagenes/hudSheika.png') no-repeat center center;
-    background-size: 100% 100%; /* Esto hará que la imagen se estire para cubrir todo el espacio */
+    background-size: cover;
     opacity: 0.85;
     z-index: 10;
+
+    /* Efecto de neón en los bordes */
     filter: drop-shadow(0 0 15px rgba(0, 162, 255, 0.8));
 }
 
@@ -119,27 +121,14 @@ body, html {
     z-index: 5;
 }
 
-/* Media queries para ajustar el HUD en diferentes dispositivos */
-@media screen and (max-width: 768px) {
-    .hud {
-        background-size: 100% 100%;
-    }
+.hud-border.top {
+    top: 0;
 }
 
-/* Para dispositivos más pequeños, podemos ajustar la opacidad si es necesario */
-@media screen and (max-width: 480px) {
-    .hud {
-        background-size: 100% 100%;
-        opacity: 0.75; /* Opcional: ajustar la opacidad para mejor visibilidad en móviles */
-    }
-}
-
-.hud-border.top,
 .hud-border.bottom {
-    width: 100vw; /* Usar viewport width para asegurar que cubre todo el ancho */
-    left: 0;
-    right: 0;
+    bottom: 0;
 }
+
 /* Logo Sheikah en el centro */
 .sheikah-logo {
     position: fixed;
