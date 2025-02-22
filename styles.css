@@ -103,15 +103,16 @@ body, html {
 
 @media screen and (max-width: 768px) {
     .hud {
-        background-size: contain; /* Permite que el HUD se vea completo */
-        background-position: center top;
+        background-size: 100% auto; /* Asegura que se ajuste horizontalmente */
     }
 }
+
 @media screen and (max-width: 480px) {
     .hud {
         background-size: 120% auto; /* Ajuste extra para pantallas más pequeñas */
     }
 }
+
 
 
 /* Franjas azules superior e inferior */
