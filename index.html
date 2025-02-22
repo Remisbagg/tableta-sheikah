@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Tableta Sheikah</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    </div>
+    <div class="custom-cursor"></div>
+    <div class="fade-screen">
+        <button id="start-button">Toca para comenzar</button>
+    </div>
+    <audio id="intro-sound" src="assets/Sonidos/SheikaSound.mp3"></audio>
+    <audio id="background-music" src="assets/Sonidos/Canción.m4a"></audio>
+    
+
+    <div class="viewport">
+        <div class="background">
+            <!-- Los cofres ahora van dentro del background -->
+            <div class="chests-container">
+                <div class="chest-wrapper left">
+                    <video id="chest-left" src="assets/Videos/cofre_izquierda.webm" ></video>
+                </div>
+                <div class="chest-wrapper center">
+                    <video id="chest-center" src="assets/Videos/cofre_centro.webm" ></video>
+                </div>
+                <div class="chest-wrapper right">
+                    <video id="chest-right" src="assets/Videos/cofre_derecha.webm" ></video>
+                </div>
+            </div>
+        </div>
+        <div class="hud"></div>
+        <div class="hud-border top"></div>
+        <div class="hud-border bottom"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
