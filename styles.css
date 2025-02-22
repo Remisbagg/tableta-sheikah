@@ -87,7 +87,6 @@ body, html {
 }
 
 /* HUD con efecto neón */
-/* Ajustes base del HUD - mantener tus estilos originales y agregar/modificar estos */
 .hud {
     position: fixed;
     top: 0;
@@ -96,63 +95,10 @@ body, html {
     height: 100%;
     pointer-events: none;
     background: url('assets/Imagenes/hudSheika.png') no-repeat center center;
-    background-size: cover; /* Cambiado de cover a contain para mantener proporciones */
+    background-size: 100% 100%; /* Esto hará que la imagen se estire para cubrir todo el espacio */
     opacity: 0.85;
     z-index: 10;
     filter: drop-shadow(0 0 15px rgba(0, 162, 255, 0.8));
-}
-
-/* Media queries para el HUD */
-@media screen and (max-width: 1024px) {
-    .hud {
-        background-size: 95% auto; /* Ajusta el tamaño para tablets */
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .hud {
-        background-size: 100% auto; /* Ajusta el tamaño para móviles landscape */
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .hud {
-        background-size: 120% auto; /* Aumenta ligeramente el tamaño para asegurar que los bordes sean visibles */
-        background-position: center center;
-    }
-}
-
-/* Ajuste específico para dispositivos muy angostos */
-@media screen and (max-width: 320px) {
-    .hud {
-        background-size: 140% auto; /* Aumenta más el tamaño para dispositivos muy pequeños */
-    }
-}
-
-/* Ajustes para diferentes relaciones de aspecto */
-@media screen and (aspect-ratio: 16/9) {
-    .hud {
-        background-size: contain;
-    }
-}
-
-@media screen and (aspect-ratio: 9/16) {
-    .hud {
-        background-size: 130% auto;
-    }
-}
-
-/* Ajustes para las franjas del HUD */
-@media screen and (max-width: 768px) {
-    .hud-border {
-        height: 30px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .hud-border {
-        height: 20px;
-    }
 }
 
 /* Franjas azules superior e inferior */
@@ -173,14 +119,27 @@ body, html {
     z-index: 5;
 }
 
-.hud-border.top {
-    top: 0;
+/* Media queries para ajustar el HUD en diferentes dispositivos */
+@media screen and (max-width: 768px) {
+    .hud {
+        background-size: 100% 100%;
+    }
 }
 
+/* Para dispositivos más pequeños, podemos ajustar la opacidad si es necesario */
+@media screen and (max-width: 480px) {
+    .hud {
+        background-size: 100% 100%;
+        opacity: 0.75; /* Opcional: ajustar la opacidad para mejor visibilidad en móviles */
+    }
+}
+
+.hud-border.top,
 .hud-border.bottom {
-    bottom: 0;
+    width: 100vw; /* Usar viewport width para asegurar que cubre todo el ancho */
+    left: 0;
+    right: 0;
 }
-
 /* Logo Sheikah en el centro */
 .sheikah-logo {
     position: fixed;
