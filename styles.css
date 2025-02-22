@@ -94,14 +94,25 @@ body, html {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    background: url('assets/Imagenes/hudSheika.png') no-repeat center center;
-    background-size: cover;
+    background: url('assets/Imagenes/hudSheika.png') no-repeat center top;
+    background-size: cover; /* Mantiene el HUD en pantalla completa */
     opacity: 0.85;
     z-index: 10;
-
-    /* Efecto de neón en los bordes */
     filter: drop-shadow(0 0 15px rgba(0, 162, 255, 0.8));
 }
+
+@media screen and (max-width: 768px) {
+    .hud {
+        background-size: contain; /* Permite que el HUD se vea completo */
+        background-position: center top;
+    }
+}
+@media screen and (max-width: 480px) {
+    .hud {
+        background-size: 120% auto; /* Ajuste extra para pantallas más pequeñas */
+    }
+}
+
 
 /* Franjas azules superior e inferior */
 .hud-border {
