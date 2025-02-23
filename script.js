@@ -166,9 +166,9 @@ function showMobilePopup() {
         mobilePopup = document.createElement('div');
         mobilePopup.id = "mobile-popup";
         mobilePopup.innerHTML = `
-            <div class="popup-content">
-                <p>¡Hola! Veo que estás en un móvil. Esta experiencia está pensada para PC, pero si sigues aquí, te recomiendo girar tu dispositivo a horizontal para disfrutar mejor del juego. ¡Diviértete!</p>
-                <button id="close-popup">Entendido</button>
+            <div class="reward-popup">
+                <p>¡Hola! Te habla remis, veo que estas en celular. Esta experiencia está pensada para PC, pero si sigues aquí, te recomiendo girar tu dispositivo a horizontal para disfrutar mejor del juego. ¡Encuentra los 3 cofres y preparate para nuestra aventura por hyrule!</p>
+                <button id="close-btn">Entendido</button>
             </div>
         `;
         
@@ -176,7 +176,7 @@ function showMobilePopup() {
         document.body.insertBefore(mobilePopup, document.body.firstChild);
         
         // Agregamos el evento al botón de cerrar
-        document.getElementById("close-popup").addEventListener("click", () => {
+        document.getElementById("close-btn").addEventListener("click", () => {
             mobilePopup.style.display = "none";
         });
     }
