@@ -183,6 +183,10 @@ function setupBackground() {
     const viewport = document.querySelector('.viewport');
 
     if (isMobileDevice()) {
+        const initialScrollLeft = (3840 - window.innerWidth) / 2;
+        const initialScrollTop = (2160 - window.innerHeight) / 2;
+        viewport.scrollTo(initialScrollLeft, initialScrollTop);
+
         // Asegurarnos de que existe el scroll-container
         let scrollContainer = document.querySelector('.scroll-container');
         if (!scrollContainer) {
@@ -195,6 +199,7 @@ function setupBackground() {
             }
             viewport.appendChild(scrollContainer);
         }
+
 
         // Limpiar cualquier transform previo
         background.style.transform = 'none';
