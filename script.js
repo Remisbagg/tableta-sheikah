@@ -174,7 +174,7 @@ function showMobilePopup() {
             <div class="reward-popup show">
                 <button class="close-btn">&times;</button>
                 <p>¡Hola! Te habla remis, veo que estas en celular. Esta experiencia está pensada para PC, pero si sigues aquí, te recomiendo girar tu dispositivo a horizontal para disfrutar mejor del juego. ¡Encuentra los 3 cofres y preparate para nuestra aventura por hyrule!</p>
-                <button class="close-btn">Entendido</button>
+                <button class="close-btn"></button>
             </div>
         `;
         
