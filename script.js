@@ -6,6 +6,7 @@ const cursor = document.querySelector('.custom-cursor');
 const totalWidth = background.offsetWidth - viewport.offsetWidth;
 const totalHeight = background.offsetHeight - viewport.offsetHeight;
 
+
 // Función para mover el cursor personalizado
 function moveCursor(e) {
     cursor.style.left = `${e.clientX - cursor.offsetWidth/2}px`;
@@ -26,9 +27,8 @@ document.addEventListener('mousemove', (e) => {
     const moveY = -(mouseY * totalHeight);
 
     // Aplicar la transformación
-    document.querySelector(".background").style.transform = `translate(${moveX}px, ${moveY}px)`;
+    background.style.transform = `translate(${moveX}px, ${moveY}px)`;
 });
-
 
 const audioElement = `<audio id="chest-sound" src="assets/Sonidos/Cofre_Zelda_BOW.mp3"></audio>
                       <audio id="error-sound" src="assets/Sonidos/error.mp3"></audio>`;
@@ -163,6 +163,8 @@ document.getElementById("start-button").addEventListener("click", function () {
     });
 });
 
+
+
 // Detectar si es un dispositivo táctil
 const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
@@ -217,17 +219,4 @@ if (isTouchDevice) {
     document.addEventListener('touchstart', handleTouchStart);
     document.addEventListener('touchmove', handleTouchMove);
     document.addEventListener('touchend', handleTouchEnd);
-} else {
-    // Mantener la funcionalidad del mouse para desktop
-    document.addEventListener('mousemove', (e) => {
-        moveCursor(e);
-
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
-
-        const moveX = -(mouseX * totalWidth);
-        const moveY = -(mouseY * totalHeight);
-
-        background.style.transform = `translate(${moveX}px, ${moveY}px)`;
-    });
 }
