@@ -147,22 +147,6 @@ document.getElementById("start-button").addEventListener("click", function () {
     });
 });
 
-// Popup para móviles
-if (window.innerWidth <= 768) {
-    const mobilePopup = document.createElement('div');
-    mobilePopup.id = "mobile-popup";
-    mobilePopup.innerHTML = `
-        <div class="popup-content">
-            <p>¡Hola! Veo que estás en un móvil. Esta experiencia está pensada para PC, pero si sigues aquí, te recomiendo girar tu dispositivo a horizontal para disfrutar mejor del juego. ¡Diviértete!</p>
-            <button id="close-popup">Entendido</button>
-        </div>
-    `;
-    document.body.appendChild(mobilePopup);
-
-    document.getElementById("close-popup").addEventListener("click", () => {
-        mobilePopup.style.display = "none";
-    });
-}
 
 // Script para móviles
 let isDragging = false;
@@ -173,6 +157,36 @@ let hasInitialScroll = false;
 function isMobileDevice() {
     return (window.innerWidth <= 768 || ('ontouchstart' in window));
 }
+
+function showMobilePopup() {
+    // Verificamos si el popup ya existe
+    let mobilePopup = document.getElementById('mobile-popup');
+    
+    if (!mobilePopup) {
+        mobilePopup = document.createElement('div');
+        mobilePopup.id = "mobile-popup";
+        mobilePopup.innerHTML = `
+            <div class="popup-content">
+                <p>¡Hola! Veo que estás en un móvil. Esta experiencia está pensada para PC, pero si sigues aquí, te recomiendo girar tu dispositivo a horizontal para disfrutar mejor del juego. ¡Diviértete!</p>
+                <button id="close-popup">Entendido</button>
+            </div>
+        `;
+        
+        // Insertamos el popup antes de cualquier otro contenido
+        document.body.insertBefore(mobilePopup, document.body.firstChild);
+        
+        // Agregamos el evento al botón de cerrar
+        document.getElementById("close-popup").addEventListener("click", () => {
+            mobilePopup.style.display = "none";
+        });
+    }
+}
+
+if (isMobileDevice()) {
+    // Intentar mostrar inmediatamente
+    showMobilePopup();
+}
+
 
 function setupBackground() {
     const background = document.querySelector('.background');
@@ -206,10 +220,16 @@ function setupBackground() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    if (isMobileDevice()) {
+        showMobilePopup();
+    }
     hasInitialScroll = false;
     setupBackground();
 });
 
 window.addEventListener('resize', () => {
+    if (isMobileDevice()) {
+        showMobilePopup();
+    }
     setupBackground();
 });
