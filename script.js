@@ -187,13 +187,15 @@ function handleTouchMove(e) {
     const deltaX = touch.clientX - touchStartX;
     const deltaY = touch.clientY - touchStartY;
 
-    // Mover el fondo basado en el desplazamiento táctil
-    const moveX = backgroundX - deltaX * 0.5; // Ajusta la sensibilidad del movimiento
-    const moveY = backgroundY - deltaY * 0.5;
+    // Invertir la dirección del movimiento
+    const moveX = backgroundX + deltaX * 0.5; // Cambiamos el signo aquí
+    const moveY = backgroundY + deltaY * 0.5; // Cambiamos el signo aquí
 
-    // Limitar el movimiento para que el fondo no se salga de la pantalla
-    const maxX = totalWidth / 2;
-    const maxY = totalHeight / 2;
+    // Calcular los límites del movimiento
+    const maxX = (background.offsetWidth - window.innerWidth) / 2;
+    const maxY = (background.offsetHeight - window.innerHeight) / 2;
+
+    // Aplicar los límites al movimiento
     backgroundX = Math.max(-maxX, Math.min(moveX, maxX));
     backgroundY = Math.max(-maxY, Math.min(moveY, maxY));
 
