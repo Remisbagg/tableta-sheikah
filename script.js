@@ -196,18 +196,6 @@ function setupBackground() {
             viewport.appendChild(scrollContainer);
         }
 
-        // Solo centramos si no se ha hecho el scroll inicial
-        if (!hasInitialScroll) {
-            const initialScrollLeft = (3840 - window.innerWidth) / 2;
-            const initialScrollTop = (2160 - window.innerHeight) / 2;
-
-            // Aplicar scroll inicial y marcar como completado
-            setTimeout(() => {
-                viewport.scrollTo(initialScrollLeft, initialScrollTop);
-                hasInitialScroll = true;
-            }, 100);
-        }
-
         // Limpiar cualquier transform previo
         background.style.transform = 'none';
 
