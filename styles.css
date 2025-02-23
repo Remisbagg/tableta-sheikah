@@ -71,6 +71,7 @@ body, html {
     height: 100vh;
     overflow: hidden;
     z-index: 1; /* Asegurarnos que está por debajo */
+    touch-action: none; /* Evitar zoom y desplazamiento no deseado en móviles */
 }
 
 /* Fondo */
@@ -113,8 +114,6 @@ body, html {
     }
 }
 
-
-
 /* Franjas azules superior e inferior */
 .hud-border {
     position: fixed;
@@ -155,7 +154,6 @@ body, html {
     z-index: 20;
 }
 
-
 .chests-container {
     position: absolute;
     width: 100%;
@@ -180,7 +178,6 @@ body, html {
 }
 
 /* Posiciones personalizadas para cada cofre */
-/* Tamaño específico para el cofre de la izquierda */
 .chest-wrapper.left {
     width: 800px;
     height: 800px;
@@ -189,7 +186,6 @@ body, html {
     transform: translate(-50%, -50%);
 }
 
-/* Tamaño específico para el cofre del centro */
 .chest-wrapper.center {
     width: 1400px;
     height: 1400px;
@@ -198,7 +194,6 @@ body, html {
     transform: translate(-50%, -50%);
 }
 
-/* Tamaño específico para el cofre de la derecha */
 .chest-wrapper.right {
     width: 800px;
     height: 800px;
@@ -302,27 +297,6 @@ body, html {
     border-radius: 10px; /* Opcional: suaviza los bordes */
 }
 
-
-
-/* Botón de cerrar */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.close-btn:hover {
-    color: #4DDFFF;
-}
-
-/* Agregar al final de tu CSS existente */
-
 /* Tablets y pantallas medianas */
 @media screen and (max-width: 1024px) {
     .chest-wrapper.left, 
@@ -371,30 +345,35 @@ body, html {
     .hud-border {
         height: 30px;
     }
+
+    /* Ajustar el tamaño del fondo en móviles */
+    .background {
+        width: 250%; /* Aumentamos el tamaño para que no se corte */
+        height: 250%;
+    }
 }
 
 /* Dispositivos móviles en portrait */
 @media screen and (max-width: 480px) {
     .chest-wrapper.left, 
     .chest-wrapper.right {
-        width: 200px;
-        height: 200px;
+        width: 150px; /* Reducimos el tamaño para que quepan mejor */
+        height: 150px;
     }
 
     .chest-wrapper.center {
-        width: 300px;
-        height: 300px;
-        top: 70%; /* Ajustar posición vertical */
+        width: 250px;
+        height: 250px;
     }
 
     .chest-wrapper.left {
-        top: 75%;
-        left: 30%;
+        left: 15%; /* Ajustamos la posición para que no se salgan de la pantalla */
+        top: 70%;
     }
 
     .chest-wrapper.right {
-        top: 75%;
-        left: 70%;
+        left: 85%;
+        top: 70%;
     }
 
     /* Ajustar popups para móviles */
