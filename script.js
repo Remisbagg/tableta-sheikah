@@ -159,6 +159,11 @@ function isMobileDevice() {
 }
 
 function showMobilePopup() {
+    // Verificamos si ya mostramos el popup
+    if (localStorage.getItem('popupShown')) {
+        return;
+    }
+
     // Verificamos si el popup ya existe
     let mobilePopup = document.getElementById('mobile-popup');
     
@@ -169,12 +174,15 @@ function showMobilePopup() {
             <div class="reward-popup show">
                 <button class="close-btn">&times;</button>
                 <p>¡Hola! Te habla remis, veo que estas en celular. Esta experiencia está pensada para PC, pero si sigues aquí, te recomiendo girar tu dispositivo a horizontal para disfrutar mejor del juego. ¡Encuentra los 3 cofres y preparate para nuestra aventura por hyrule!</p>
-                <button class="close-btn"></button>
+                <button class="close-btn">Entendido</button>
             </div>
         `;
         
         // Insertamos el popup antes de cualquier otro contenido
         document.body.insertBefore(mobilePopup, document.body.firstChild);
+        
+        // Marcamos que ya mostramos el popup
+        localStorage.setItem('popupShown', 'true');
         
         // Agregamos el evento a todos los botones de cerrar
         mobilePopup.querySelectorAll('.close-btn').forEach(btn => {
