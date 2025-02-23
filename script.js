@@ -165,35 +165,3 @@ document.getElementById("start-button").addEventListener("click", function () {
 });
 
 
-
-// Detectar si es un dispositivo táctil
-const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-// Solo aplicar el efecto parallax si NO es un dispositivo táctil
-if (!isTouchDevice) {
-    const background = document.querySelector('.background');
-    const viewport = document.querySelector('.viewport');
-    const cursor = document.querySelector('.custom-cursor');
-
-    // Definimos el rango total de movimiento basado en el tamaño extra de la imagen
-    const totalWidth = background.offsetWidth - viewport.offsetWidth;
-    const totalHeight = background.offsetHeight - viewport.offsetHeight;
-
-    // Añadimos el evento mousemove solo para dispositivos de escritorio
-    document.addEventListener('mousemove', (e) => {
-        // Mover el cursor personalizado
-        cursor.style.left = `${e.clientX - cursor.offsetWidth/2}px`;
-        cursor.style.top = `${e.clientY - cursor.offsetHeight/2}px`;
-
-        // Efecto parallax del fondo
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
-
-        // Calculamos el movimiento basado en el tamaño total disponible
-        const moveX = -(mouseX * totalWidth);
-        const moveY = -(mouseY * totalHeight);
-
-        // Aplicar la transformación
-        background.style.transform = `translate(${moveX}px, ${moveY}px)`;
-    });
-}

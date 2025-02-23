@@ -102,21 +102,6 @@ body, html {
     filter: drop-shadow(0 0 15px rgba(0, 162, 255, 0.8));
 }
 
-@media screen and (max-width: 768px) {
-    .background {
-        width: 100%; /* Fondo a tamaño normal en móviles */
-        height: 100%;
-        transform: none !important; /* Previene cualquier transformación */
-        transition: none; /* Elimina la transición en móviles */
-    }
-    
-    /* Centramos el fondo para dispositivos móviles */
-    .background {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) !important;
-    }
-}
 
 /* Franjas azules superior e inferior */
 .hud-border {
@@ -301,120 +286,39 @@ body, html {
     border-radius: 10px; /* Opcional: suaviza los bordes */
 }
 
-/* Tablets y pantallas medianas */
-@media screen and (max-width: 1024px) {
-    .chest-wrapper.left, 
-    .chest-wrapper.right {
-        width: 500px;
-        height: 500px;
-    }
 
-    .chest-wrapper.center {
-        width: 800px;
-        height: 800px;
-    }
+/******************************** SECCIÓN CSS MOVILES ***************************************/
 
+/* Modificaciones al viewport para manejar el scroll en móviles */
+.viewport {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 1;
+    touch-action: none; /* Desactivar comportamientos táctiles por defecto */
+}
+
+/* Media query para dispositivos móviles */
+@media (max-width: 768px) {
+    .viewport {
+        overflow: scroll; /* Permitir scroll en móviles */
+        -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+        scroll-behavior: smooth;
+    }
+    
     .background {
-        width: 150%; /* Reducir un poco el área de parallax */
-        height: 150%;
+        transform: none !important; /* Desactivar transform en móviles */
+        transition: none !important; /* Desactivar transición en móviles */
     }
-}
-
-/* Dispositivos móviles en landscape */
-@media screen and (max-width: 768px) {
-    .custom-cursor {
-        width: 50px;
-        height: 50px;
+    
+    /* Ocultar scrollbars pero mantener funcionalidad */
+    .viewport::-webkit-scrollbar {
+        display: none;
     }
-
-    .chest-wrapper.left, 
-    .chest-wrapper.right {
-        width: 300px;
-        height: 300px;
-    }
-
-    .chest-wrapper.center {
-        width: 500px;
-        height: 500px;
-    }
-
-    .chest-wrapper.left {
-        left: 25%;
-    }
-
-    .chest-wrapper.right {
-        left: 75%;
-    }
-
-    .hud-border {
-        height: 30px;
-    }
-
-    /* Ajustar el tamaño del fondo en móviles */
-    .background {
-        width: 250%; /* Aumentamos el tamaño para que no se corte */
-        height: 250%;
-    }
-}
-
-/* Dispositivos móviles en portrait */
-@media screen and (max-width: 480px) {
-    .chest-wrapper.left, 
-    .chest-wrapper.right {
-        width: 150px; /* Reducimos el tamaño para que quepan mejor */
-        height: 150px;
-    }
-
-    .chest-wrapper.center {
-        width: 250px;
-        height: 250px;
-    }
-
-    .chest-wrapper.left {
-        left: 15%; /* Ajustamos la posición para que no se salgan de la pantalla */
-        top: 70%;
-    }
-
-    .chest-wrapper.right {
-        left: 85%;
-        top: 70%;
-    }
-
-    /* Ajustar popups para móviles */
-    .reward-popup {
-        width: 85%;
-        padding: 15px;
-    }
-
-    .reward-popup p {
-        font-size: 16px;
-    }
-
-    #start-button {
-        font-size: 16px;
-        padding: 12px 24px;
-    }
-}
-
-/* Dispositivos muy pequeños */
-@media screen and (max-width: 320px) {
-    .chest-wrapper.left, 
-    .chest-wrapper.right {
-        width: 150px;
-        height: 150px;
-    }
-
-    .chest-wrapper.center {
-        width: 200px;
-        height: 200px;
-    }
-}
-
-/* Ajuste de altura para dispositivos muy cortos */
-@media screen and (max-height: 500px) {
-    .chest-wrapper.left,
-    .chest-wrapper.right,
-    .chest-wrapper.center {
-        top: 65%;
+    
+    .viewport {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 }
