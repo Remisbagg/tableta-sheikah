@@ -171,7 +171,7 @@ document.getElementById("start-button").addEventListener("click", function () {
 let isDragging = false;
 let startX, startY;
 let scrollLeft, scrollTop;
-
+let hasInitialScroll = false;
 
 function isMobileDevice() {
     return (window.innerWidth <= 768 || ('ontouchstart' in window));
@@ -179,7 +179,6 @@ function isMobileDevice() {
 
 
 function setupBackground() {
-    let hasInitialScroll = false;
     const background = document.querySelector('.background');
     const viewport = document.querySelector('.viewport');
 
