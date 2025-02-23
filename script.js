@@ -165,3 +165,100 @@ document.getElementById("start-button").addEventListener("click", function () {
 });
 
 
+////////////////////////////////////////////////////////////////// SCRIPT MOVILES//////////////////////////////////////////////////////
+
+// Primero agregamos las variables necesarias para el tracking del touch
+let isDragging = false;
+let startX, startY;
+let scrollLeft, scrollTop;
+
+// Función para determinar si es dispositivo móvil
+function isMobileDevice() {
+    return (window.innerWidth <= 768 || ('ontouchstart' in window));
+}
+
+// Configuración inicial del fondo
+function setupBackground() {
+    const background = document.querySelector('.background');
+    const viewport = document.querySelector('.viewport');
+
+    if (isMobileDevice()) {
+        // Configuración para móviles
+        background.style.transform = 'none'; // Removemos el transform usado para parallax
+        background.style.position = 'absolute';
+        background.style.width = '3840px'; // Ancho original de la imagen
+        background.style.height = '2160px'; // Alto original de la imagen
+        
+        // Centramos inicialmente la imagen
+        viewport.scrollLeft = (background.offsetWidth - viewport.offsetWidth) / 2;
+        viewport.scrollTop = (background.offsetHeight - viewport.offsetHeight) / 2;
+        
+        // Habilitamos el scroll suave
+        viewport.style.overflow = 'scroll';
+        viewport.style.scrollBehavior = 'smooth';
+        
+        // Añadimos los event listeners para touch
+        setupTouchEvents(viewport);
+    } else {
+        // Configuración original para desktop
+        background.style.width = '200%';
+        background.style.height = '200%';
+        setupParallax();
+    }
+}
+
+// Configuración de eventos táctiles
+function setupTouchEvents(viewport) {
+    viewport.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        startX = e.touches[0].pageX - viewport.offsetLeft;
+        startY = e.touches[0].pageY - viewport.offsetTop;
+        scrollLeft = viewport.scrollLeft;
+        scrollTop = viewport.scrollTop;
+    });
+
+    viewport.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        
+        e.preventDefault(); // Prevenir scroll natural
+        
+        const x = e.touches[0].pageX - viewport.offsetLeft;
+        const y = e.touches[0].pageY - viewport.offsetTop;
+        
+        // Calcular la distancia movida
+        const moveX = (x - startX) * 2; // Multiplicador para hacer el movimiento más sensible
+        const moveY = (y - startY) * 2;
+        
+        // Aplicar el scroll
+        viewport.scrollLeft = scrollLeft - moveX;
+        viewport.scrollTop = scrollTop - moveY;
+    });
+
+    viewport.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+}
+
+// Configuración del parallax original para desktop
+function setupParallax() {
+    const background = document.querySelector('.background');
+    const viewport = document.querySelector('.viewport');
+    
+    // Tu código original de parallax aquí
+    document.addEventListener('mousemove', (e) => {
+        const totalWidth = background.offsetWidth - viewport.offsetWidth;
+        const totalHeight = background.offsetHeight - viewport.offsetHeight;
+        
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
+        
+        const moveX = -(mouseX * totalWidth);
+        const moveY = -(mouseY * totalHeight);
+        
+        background.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+}
+
+// Inicialización y manejo de resize
+document.addEventListener('DOMContentLoaded', setupBackground);
+window.addEventListener('resize', setupBackground);
