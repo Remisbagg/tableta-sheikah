@@ -27,8 +27,9 @@ document.addEventListener('mousemove', (e) => {
     const moveY = -(mouseY * totalHeight);
 
     // Aplicar la transformación
-    background.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    document.querySelector(".background").style.transform = `translate(${moveX}px, ${moveY}px)`;
 });
+
 
 const audioElement = `<audio id="chest-sound" src="assets/Sonidos/Cofre_Zelda_BOW.mp3"></audio>
                       <audio id="error-sound" src="assets/Sonidos/error.mp3"></audio>`;
@@ -168,55 +169,31 @@ document.getElementById("start-button").addEventListener("click", function () {
 // Detectar si es un dispositivo táctil
 const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-// Variables para almacenar la posición inicial del toque
-let touchStartX = 0;
-let touchStartY = 0;
-let backgroundX = 0;
-let backgroundY = 0;
+// Solo aplicar el efecto parallax si NO es un dispositivo táctil
+if (!isTouchDevice) {
+    const background = document.querySelector('.background');
+    const viewport = document.querySelector('.viewport');
+    const cursor = document.querySelector('.custom-cursor');
 
-// Función para manejar el inicio del toque
-function handleTouchStart(e) {
-    const touch = e.touches[0];
-    touchStartX = touch.clientX;
-    touchStartY = touch.clientY;
-}
+    // Definimos el rango total de movimiento basado en el tamaño extra de la imagen
+    const totalWidth = background.offsetWidth - viewport.offsetWidth;
+    const totalHeight = background.offsetHeight - viewport.offsetHeight;
 
-// Función para manejar el movimiento del toque
-function handleTouchMove(e) {
-    if (!isTouchDevice) return; // Solo aplica en dispositivos táctiles
+    // Añadimos el evento mousemove solo para dispositivos de escritorio
+    document.addEventListener('mousemove', (e) => {
+        // Mover el cursor personalizado
+        cursor.style.left = `${e.clientX - cursor.offsetWidth/2}px`;
+        cursor.style.top = `${e.clientY - cursor.offsetHeight/2}px`;
 
-    const touch = e.touches[0];
-    const deltaX = touch.clientX - touchStartX;
-    const deltaY = touch.clientY - touchStartY;
+        // Efecto parallax del fondo
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
 
-    // Invertir la dirección del movimiento
-    const moveX = backgroundX + deltaX * 0.5; // Cambiamos el signo aquí
-    const moveY = backgroundY + deltaY * 0.5; // Cambiamos el signo aquí
+        // Calculamos el movimiento basado en el tamaño total disponible
+        const moveX = -(mouseX * totalWidth);
+        const moveY = -(mouseY * totalHeight);
 
-    // Calcular los límites del movimiento
-    const maxX = (background.offsetWidth - window.innerWidth) / 2;
-    const maxY = (background.offsetHeight - window.innerHeight) / 2;
-
-    // Aplicar los límites al movimiento
-    backgroundX = Math.max(-maxX, Math.min(moveX, maxX));
-    backgroundY = Math.max(-maxY, Math.min(moveY, maxY));
-
-    // Aplicar la transformación al fondo
-    background.style.transform = `translate(${backgroundX}px, ${backgroundY}px)`;
-
-    // Actualizar la posición inicial para el próximo movimiento
-    touchStartX = touch.clientX;
-    touchStartY = touch.clientY;
-}
-
-// Función para manejar el fin del toque
-function handleTouchEnd() {
-    // No es necesario hacer nada aquí, pero puedes agregar lógica si lo necesitas
-}
-
-// Agregar eventos táctiles si es un dispositivo móvil
-if (isTouchDevice) {
-    document.addEventListener('touchstart', handleTouchStart);
-    document.addEventListener('touchmove', handleTouchMove);
-    document.addEventListener('touchend', handleTouchEnd);
+        // Aplicar la transformación
+        background.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
 }

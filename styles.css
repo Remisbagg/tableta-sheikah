@@ -103,14 +103,18 @@ body, html {
 }
 
 @media screen and (max-width: 768px) {
-    .hud {
-        background-size: 100% auto; /* Asegura que se ajuste horizontalmente */
+    .background {
+        width: 100%; /* Fondo a tamaño normal en móviles */
+        height: 100%;
+        transform: none !important; /* Previene cualquier transformación */
+        transition: none; /* Elimina la transición en móviles */
     }
-}
-
-@media screen and (max-width: 480px) {
-    .hud {
-        background-size: 120% auto; /* Ajuste extra para pantallas más pequeñas */
+    
+    /* Centramos el fondo para dispositivos móviles */
+    .background {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) !important;
     }
 }
 
