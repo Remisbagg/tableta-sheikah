@@ -171,10 +171,12 @@ document.getElementById("start-button").addEventListener("click", function () {
 let isDragging = false;
 let startX, startY;
 let scrollLeft, scrollTop;
+let hasInitialScroll = false;
 
 function isMobileDevice() {
     return (window.innerWidth <= 768 || ('ontouchstart' in window));
 }
+
 
 function setupBackground() {
     const background = document.querySelector('.background');
@@ -194,32 +196,37 @@ function setupBackground() {
             viewport.appendChild(scrollContainer);
         }
 
-        // Calcular la posición inicial de scroll para centrar
-        const initialScrollLeft = (3840 - window.innerWidth) / 2;
-        const initialScrollTop = (2160 - window.innerHeight) / 2;
+        // Solo centramos si no se ha hecho el scroll inicial
+        if (!hasInitialScroll) {
+            const initialScrollLeft = (3840 - window.innerWidth) / 2;
+            const initialScrollTop = (2160 - window.innerHeight) / 2;
 
-        // Aplicar scroll inicial después de un pequeño delay para asegurar que todo está cargado
-        setTimeout(() => {
-            viewport.scrollTo(initialScrollLeft, initialScrollTop);
-        }, 100);
+            // Aplicar scroll inicial y marcar como completado
+            setTimeout(() => {
+                viewport.scrollTo(initialScrollLeft, initialScrollTop);
+                hasInitialScroll = true;
+            }, 100);
+        }
 
         // Limpiar cualquier transform previo
         background.style.transform = 'none';
 
         // Prevenir el scroll más allá de los límites
         viewport.addEventListener('scroll', () => {
-            if (viewport.scrollTop < 0) viewport.scrollTop = 0;
-            if (viewport.scrollLeft < 0) viewport.scrollLeft = 0;
-            if (viewport.scrollTop > (2160 - viewport.offsetHeight)) {
-                viewport.scrollTop = 2160 - viewport.offsetHeight;
-            }
-            if (viewport.scrollLeft > (3840 - viewport.offsetWidth)) {
-                viewport.scrollLeft = 3840 - viewport.offsetWidth;
-            }
-        });
+            requestAnimationFrame(() => {
+                const maxScrollTop = 2160 - viewport.offsetHeight;
+                const maxScrollLeft = 3840 - viewport.offsetWidth;
+                
+                if (viewport.scrollTop < 0) viewport.scrollTop = 0;
+                if (viewport.scrollLeft < 0) viewport.scrollLeft = 0;
+                if (viewport.scrollTop > maxScrollTop) viewport.scrollTop = maxScrollTop;
+                if (viewport.scrollLeft > maxScrollLeft) viewport.scrollLeft = maxScrollLeft;
+            });
+        }, { passive: true }); // Mejorar el rendimiento del scroll
 
     } else {
         // Configuración original para desktop
+        hasInitialScroll = false; // Resetear para cuando se cambie a móvil
         background.style.width = '200%';
         background.style.height = '200%';
         setupParallax();
@@ -291,5 +298,22 @@ function setupParallax() {
 }
 
 // Inicialización y manejo de resize
-document.addEventListener('DOMContentLoaded', setupBackground);
-window.addEventListener('resize', setupBackground);
+// Solo ejecutar el setup completo al cargar la página
+// Solo ejecutar el setup completo al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+    hasInitialScroll = false; // Asegurar que está en false al inicio
+    setupBackground();
+});
+
+
+// Para el resize, preservar la posición actual si ya estaba en móvil
+window.addEventListener('resize', () => {
+    if (isMobileDevice()) {
+        // Si ya estamos en móvil, no resetear el scroll
+        setupBackground();
+    } else {
+        // Si cambiamos a desktop, resetear todo
+        hasInitialScroll = false;
+        setupBackground();
+    }
+});
