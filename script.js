@@ -181,27 +181,11 @@ function setupBackground() {
     const viewport = document.querySelector('.viewport');
 
     if (isMobileDevice()) {
-        // Configuración para móviles
-        background.style.transform = 'none';
-        background.style.position = 'absolute';
-        background.style.width = '3840px';
-        background.style.height = '2160px';
-        
-        // Configurar el viewport para scroll
-        viewport.style.overflow = 'hidden'; // Cambiamos a hidden para manejar el scroll manualmente
-        
-        // Centramos inicialmente la imagen
-        const initialScrollLeft = (background.offsetWidth - viewport.offsetWidth) / 2;
-        const initialScrollTop = (background.offsetHeight - viewport.offsetHeight) / 2;
-        
-        // Crear un contenedor para el scroll
-        if (!document.querySelector('.scroll-container')) {
-            const scrollContainer = document.createElement('div');
+        // Asegurarnos de que existe el scroll-container
+        let scrollContainer = document.querySelector('.scroll-container');
+        if (!scrollContainer) {
+            scrollContainer = document.createElement('div');
             scrollContainer.className = 'scroll-container';
-            scrollContainer.style.position = 'absolute';
-            scrollContainer.style.width = '3840px';
-            scrollContainer.style.height = '2160px';
-            scrollContainer.style.overflow = 'hidden';
             
             // Mover el background al contenedor
             while (viewport.firstChild) {
@@ -209,10 +193,33 @@ function setupBackground() {
             }
             viewport.appendChild(scrollContainer);
         }
-        
-        setupTouchEvents(viewport);
+
+        // Calcular la posición inicial de scroll para centrar
+        const initialScrollLeft = (3840 - window.innerWidth) / 2;
+        const initialScrollTop = (2160 - window.innerHeight) / 2;
+
+        // Aplicar scroll inicial después de un pequeño delay para asegurar que todo está cargado
+        setTimeout(() => {
+            viewport.scrollTo(initialScrollLeft, initialScrollTop);
+        }, 100);
+
+        // Limpiar cualquier transform previo
+        background.style.transform = 'none';
+
+        // Prevenir el scroll más allá de los límites
+        viewport.addEventListener('scroll', () => {
+            if (viewport.scrollTop < 0) viewport.scrollTop = 0;
+            if (viewport.scrollLeft < 0) viewport.scrollLeft = 0;
+            if (viewport.scrollTop > (2160 - viewport.offsetHeight)) {
+                viewport.scrollTop = 2160 - viewport.offsetHeight;
+            }
+            if (viewport.scrollLeft > (3840 - viewport.offsetWidth)) {
+                viewport.scrollLeft = 3840 - viewport.offsetWidth;
+            }
+        });
+
     } else {
-        // Configuración para desktop
+        // Configuración original para desktop
         background.style.width = '200%';
         background.style.height = '200%';
         setupParallax();

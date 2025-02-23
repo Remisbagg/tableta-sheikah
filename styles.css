@@ -301,30 +301,39 @@ body, html {
         position: fixed;
         width: 100%;
         height: 100%;
-        overflow: hidden;
-        touch-action: pan-x pan-y; /* Permitir gestos de paneo */
+        overflow: scroll;
         -webkit-overflow-scrolling: touch;
+        touch-action: pan-x pan-y;
     }
     
     /* Ajustes del background para móviles */
     .background {
-        width: 3840px; /* Ancho original de la imagen */
-        height: 2160px; /* Alto original de la imagen */
-        transform: none;
-        transition: transform 0.3s ease-out;
-        will-change: transform;
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%); /* Centrar inicialmente */
+        width: 3840px;  /* Ancho original */
+        height: 2160px; /* Alto original */
+        top: 0;
+        left: 0;
+        transform: none !important;
+        transition: none !important;
+        background-size: 3840px 2160px; /* Forzar tamaño exacto */
+        background-position: 0 0; /* Empezar desde la esquina superior izquierda */
     }
 
     /* Contenedor de scroll para móviles */
     .scroll-container {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
+        position: relative;
+        width: 3840px;  /* Mismo ancho que el background */
+        height: 2160px; /* Mismo alto que el background */
+        overflow: auto;
+    }
+
+    .viewport::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .viewport {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 
     /* Ajustes para los cofres en móvil */
