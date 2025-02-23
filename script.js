@@ -171,7 +171,7 @@ document.getElementById("start-button").addEventListener("click", function () {
 let isDragging = false;
 let startX, startY;
 let scrollLeft, scrollTop;
-let hasInitialScroll = false;
+
 
 function isMobileDevice() {
     return (window.innerWidth <= 768 || ('ontouchstart' in window));
@@ -179,14 +179,13 @@ function isMobileDevice() {
 
 
 function setupBackground() {
+    let hasInitialScroll = false;
     const background = document.querySelector('.background');
     const viewport = document.querySelector('.viewport');
 
     if (isMobileDevice()) {
         const initialScrollLeft = (3840 - window.innerWidth) / 2;
         const initialScrollTop = (2160 - window.innerHeight) / 2;
-        viewport.scrollTo(initialScrollLeft, initialScrollTop);
-
         // Asegurarnos de que existe el scroll-container
         let scrollContainer = document.querySelector('.scroll-container');
         if (!scrollContainer) {
@@ -200,6 +199,17 @@ function setupBackground() {
             viewport.appendChild(scrollContainer);
         }
 
+        // Solo centramos si no se ha hecho el scroll inicial
+        if (!hasInitialScroll) {
+            const initialScrollLeft = (3840 - window.innerWidth) / 2;
+            const initialScrollTop = (2160 - window.innerHeight) / 2;
+
+            // Aplicar scroll inicial y marcar como completado
+            setTimeout(() => {
+                viewport.scrollTo(initialScrollLeft, initialScrollTop);
+                hasInitialScroll = true;
+            }, 100);
+        }
 
         // Limpiar cualquier transform previo
         background.style.transform = 'none';
