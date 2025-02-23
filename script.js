@@ -167,71 +167,97 @@ document.getElementById("start-button").addEventListener("click", function () {
 
 ////////////////////////////////////////////////////////////////// SCRIPT MOVILES//////////////////////////////////////////////////////
 
-// Primero agregamos las variables necesarias para el tracking del touch
+// Variables para el tracking del touch
 let isDragging = false;
 let startX, startY;
 let scrollLeft, scrollTop;
 
-// Función para determinar si es dispositivo móvil
 function isMobileDevice() {
     return (window.innerWidth <= 768 || ('ontouchstart' in window));
 }
 
-// Configuración inicial del fondo
 function setupBackground() {
     const background = document.querySelector('.background');
     const viewport = document.querySelector('.viewport');
 
     if (isMobileDevice()) {
         // Configuración para móviles
-        background.style.transform = 'none'; // Removemos el transform usado para parallax
+        background.style.transform = 'none';
         background.style.position = 'absolute';
-        background.style.width = '3840px'; // Ancho original de la imagen
-        background.style.height = '2160px'; // Alto original de la imagen
+        background.style.width = '3840px';
+        background.style.height = '2160px';
+        
+        // Configurar el viewport para scroll
+        viewport.style.overflow = 'hidden'; // Cambiamos a hidden para manejar el scroll manualmente
         
         // Centramos inicialmente la imagen
-        viewport.scrollLeft = (background.offsetWidth - viewport.offsetWidth) / 2;
-        viewport.scrollTop = (background.offsetHeight - viewport.offsetHeight) / 2;
+        const initialScrollLeft = (background.offsetWidth - viewport.offsetWidth) / 2;
+        const initialScrollTop = (background.offsetHeight - viewport.offsetHeight) / 2;
         
-        // Habilitamos el scroll suave
-        viewport.style.overflow = 'scroll';
-        viewport.style.scrollBehavior = 'smooth';
+        // Crear un contenedor para el scroll
+        if (!document.querySelector('.scroll-container')) {
+            const scrollContainer = document.createElement('div');
+            scrollContainer.className = 'scroll-container';
+            scrollContainer.style.position = 'absolute';
+            scrollContainer.style.width = '3840px';
+            scrollContainer.style.height = '2160px';
+            scrollContainer.style.overflow = 'hidden';
+            
+            // Mover el background al contenedor
+            while (viewport.firstChild) {
+                scrollContainer.appendChild(viewport.firstChild);
+            }
+            viewport.appendChild(scrollContainer);
+        }
         
-        // Añadimos los event listeners para touch
         setupTouchEvents(viewport);
     } else {
-        // Configuración original para desktop
+        // Configuración para desktop
         background.style.width = '200%';
         background.style.height = '200%';
         setupParallax();
     }
 }
 
-// Configuración de eventos táctiles
 function setupTouchEvents(viewport) {
+    const background = document.querySelector('.background');
+    
     viewport.addEventListener('touchstart', (e) => {
         isDragging = true;
-        startX = e.touches[0].pageX - viewport.offsetLeft;
-        startY = e.touches[0].pageY - viewport.offsetTop;
+        startX = e.touches[0].pageX;
+        startY = e.touches[0].pageY;
         scrollLeft = viewport.scrollLeft;
         scrollTop = viewport.scrollTop;
+        
+        // Guardar la posición inicial del background
+        const style = window.getComputedStyle(background);
+        const matrix = new WebKitCSSMatrix(style.transform);
+        startX = e.touches[0].pageX - matrix.m41;
+        startY = e.touches[0].pageY - matrix.m42;
     });
 
     viewport.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
+        e.preventDefault();
         
-        e.preventDefault(); // Prevenir scroll natural
+        const x = e.touches[0].pageX;
+        const y = e.touches[0].pageY;
         
-        const x = e.touches[0].pageX - viewport.offsetLeft;
-        const y = e.touches[0].pageY - viewport.offsetTop;
+        // Calcular el movimiento
+        const moveX = x - startX;
+        const moveY = y - startY;
         
-        // Calcular la distancia movida
-        const moveX = (x - startX) * 2; // Multiplicador para hacer el movimiento más sensible
-        const moveY = (y - startY) * 2;
+        // Aplicar límites al movimiento
+        const maxX = 0;
+        const minX = viewport.offsetWidth - background.offsetWidth;
+        const maxY = 0;
+        const minY = viewport.offsetHeight - background.offsetHeight;
         
-        // Aplicar el scroll
-        viewport.scrollLeft = scrollLeft - moveX;
-        viewport.scrollTop = scrollTop - moveY;
+        let newX = Math.min(maxX, Math.max(minX, moveX));
+        let newY = Math.min(maxY, Math.max(minY, moveY));
+        
+        // Aplicar la transformación con límites
+        background.style.transform = `translate(${newX}px, ${newY}px)`;
     });
 
     viewport.addEventListener('touchend', () => {
@@ -239,12 +265,10 @@ function setupTouchEvents(viewport) {
     });
 }
 
-// Configuración del parallax original para desktop
 function setupParallax() {
     const background = document.querySelector('.background');
     const viewport = document.querySelector('.viewport');
     
-    // Tu código original de parallax aquí
     document.addEventListener('mousemove', (e) => {
         const totalWidth = background.offsetWidth - viewport.offsetWidth;
         const totalHeight = background.offsetHeight - viewport.offsetHeight;
